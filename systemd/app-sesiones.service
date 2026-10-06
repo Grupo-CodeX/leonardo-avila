@@ -1,0 +1,17 @@
+[Unit]
+Description=Backend Node.js con sesiones (Grupo CodeX)
+After=network.target
+
+[Service]
+Type=simple
+User=deploy
+Group=deploy
+WorkingDirectory=/home/deploy/app
+ExecStart=/usr/bin/node server.js
+Restart=always
+RestartSec=3
+Environment=NODE_ENV=production
+Environment=SESSION_SECRET=CAMBIAR_ESTE_VALOR
+
+[Install]
+WantedBy=multi-user.target
