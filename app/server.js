@@ -16,26 +16,74 @@ app.use(session({
   cookie: { httpOnly: true, sameSite: 'lax', maxAge: 30 * 60 * 1000 }
 }));
 
-const estilo = `<style>body{font-family:Arial;background:#1e1b4b;color:#e0e7ff;text-align:center;padding:60px}
-.card{background:#312e81;max-width:600px;margin:auto;padding:30px;border-radius:12px}
-input,button{padding:10px;border-radius:6px;border:none;margin:5px}button{background:#a78bfa;cursor:pointer}
-a{color:#c4b5fd}code{background:#1e1b4b;padding:2px 6px;border-radius:4px}</style>`;
+// Evita que un nombre como <script> se ejecute en la página (XSS)
+const escapar = (t) => String(t).replace(/[&<>"']/g, (c) =>
+  ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+const pagina = (titulo, contenido) => `<!DOCTYPE html>
+<html lang="es"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>${titulo}</title>
+<style>
+  *{box-sizing:border-box;margin:0}
+  body{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;padding:40px 20px;
+       font-family:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;color:#e0e7ff;
+       background:radial-gradient(900px 500px at 85% -10%,rgba(167,139,250,.25),transparent 60%),
+                  radial-gradient(700px 500px at -10% 110%,rgba(56,189,248,.10),transparent 60%),#13112e}
+  .card{width:100%;max-width:640px;background:#1c1a45;border:1px solid #2e2a6b;border-radius:20px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.45)}
+  .top{height:6px;background:linear-gradient(90deg,#a78bfa,#38bdf8)}
+  .body{padding:40px 44px}
+  .badge{display:inline-flex;align-items:center;gap:8px;font:600 13px/1 Consolas,"Courier New",monospace;letter-spacing:2px;
+         color:#c4b5fd;background:rgba(167,139,250,.14);padding:8px 14px;border-radius:999px}
+  .dot{width:8px;height:8px;border-radius:50%;background:#4ade80;box-shadow:0 0 10px #4ade80}
+  h1{margin-top:20px;font-size:34px;line-height:1.2;color:#fff}
+  h1 span{color:#a78bfa}
+  .lead{margin-top:10px;color:#a5b4fc;font-size:17px;line-height:1.6}
+  form{margin-top:28px;display:flex;gap:10px}
+  input{flex:1;padding:14px 16px;border-radius:10px;border:1px solid #3b3680;background:#13112e;color:#fff;font-size:16px;outline:none}
+  input:focus{border-color:#a78bfa;box-shadow:0 0 0 3px rgba(167,139,250,.25)}
+  button,.btn{padding:14px 22px;border-radius:10px;border:none;background:#a78bfa;color:#13112e;font-weight:700;font-size:16px;cursor:pointer;text-decoration:none}
+  button:hover,.btn:hover{background:#c4b5fd}
+  .btn.sec{background:transparent;color:#c4b5fd;border:1px solid #3b3680}
+  .stats{margin-top:28px;display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .stat{background:#13112e;border:1px solid #2e2a6b;border-radius:14px;padding:16px 18px}
+  .stat small,.field small{display:block;font:600 11px/1 Consolas,monospace;letter-spacing:2px;color:#818cf8;text-transform:uppercase}
+  .stat b{display:block;margin-top:8px;font:700 26px Consolas,"Courier New",monospace;color:#fff}
+  .field{margin-top:14px;background:#13112e;border:1px solid #2e2a6b;border-radius:14px;padding:16px 18px}
+  .field code{display:block;margin-top:8px;font:14px Consolas,"Courier New",monospace;color:#ddd6fe;word-break:break-all}
+  .chips{margin-top:22px;display:flex;flex-wrap:wrap;gap:8px}
+  .chip{font:13px Consolas,monospace;color:#bae6fd;background:rgba(56,189,248,.10);border:1px solid rgba(56,189,248,.3);border-radius:999px;padding:6px 12px}
+  .acciones{margin-top:28px;display:flex;gap:10px;flex-wrap:wrap}
+  footer{font-size:13px;color:#6366f1;text-align:center}
+  @media(max-width:600px){.body{padding:28px 22px}form{flex-direction:column}.stats{grid-template-columns:1fr}}
+</style></head>
+<body><main class="card"><div class="top"></div><div class="body">${contenido}</div></main>
+<footer>Grupo CodeX · Node.js + Express detrás de Nginx · app.local</footer></body></html>`;
 
 app.get('/', (req, res) => {
   if (!req.session.usuario) {
-    return res.send(`${estilo}<div class="card"><h1>App Node.js - Grupo CodeX</h1>
-      <p>Backend detrás de proxy inverso Nginx</p>
+    return res.send(pagina('Iniciar sesión · App Grupo CodeX', `
+      <span class="badge"><span class="dot"></span>HOST VIRTUAL 2 · BACKEND</span>
+      <h1>App <span>Node.js</span> · Grupo CodeX</h1>
+      <p class="lead">Backend detrás de un proxy inverso Nginx. Escribe tu nombre para iniciar una sesión.</p>
       <form method="post" action="/login">
-        <input name="usuario" placeholder="Tu nombre" required>
+        <input name="usuario" placeholder="Tu nombre" required autocomplete="off">
         <button>Iniciar sesión</button>
-      </form></div>`);
+      </form>
+      <div class="chips"><span class="chip">Express</span><span class="chip">express-session</span><span class="chip">cookie sid</span></div>`));
   }
   req.session.visitas = (req.session.visitas || 0) + 1;
-  res.send(`${estilo}<div class="card"><h1>Hola, ${req.session.usuario}</h1>
-    <p>Visitas en esta sesión: <b>${req.session.visitas}</b></p>
-    <p>ID de sesión: <code>${req.sessionID}</code></p>
-    <p>IP del cliente (X-Forwarded-For): <code>${req.ip}</code></p>
-    <p><a href="/api/info">Ver /api/info</a> · <a href="/logout">Cerrar sesión</a></p></div>`);
+  res.send(pagina('Sesión activa · App Grupo CodeX', `
+    <span class="badge"><span class="dot"></span>SESIÓN ACTIVA</span>
+    <h1>Hola, <span>${escapar(req.session.usuario)}</span></h1>
+    <p class="lead">El servidor te recuerda gracias a la cookie <b>sid</b>, aunque HTTP no tiene estado.</p>
+    <div class="stats">
+      <div class="stat"><small>Visitas en esta sesión</small><b>${req.session.visitas}</b></div>
+      <div class="stat"><small>IP del cliente</small><b>${escapar(req.ip)}</b></div>
+    </div>
+    <div class="field"><small>ID de sesión</small><code>${req.sessionID}</code></div>
+    <div class="chips"><span class="chip">HttpOnly</span><span class="chip">SameSite=Lax</span><span class="chip">expira en 30 min</span></div>
+    <div class="acciones"><a class="btn" href="/api/info">Ver /api/info</a><a class="btn sec" href="/logout">Cerrar sesión</a></div>`));
 });
 
 app.post('/login', (req, res) => {

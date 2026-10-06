@@ -1,7 +1,55 @@
 <!DOCTYPE html>
-<html lang="es"><head><meta charset="UTF-8"><title>Sitio 1 - Grupo CodeX</title>
-<style>body{font-family:Arial;background:#0f172a;color:#e2e8f0;text-align:center;padding:60px}
-h1{color:#38bdf8}.card{background:#1e293b;max-width:600px;margin:auto;padding:30px;border-radius:12px}</style></head>
-<body><div class="card"><h1>Sitio 1 - Host virtual estático</h1>
-<p>Servido por Nginx desde <code>/var/www/sitio1</code></p>
-<p>Servidor: groupcodex · 192.168.56.10</p></div></body></html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sitio 1 · Grupo CodeX</title>
+<style>
+  :root{--bg:#0b1120;--card:#111a2e;--line:#1e2a44;--txt:#e2e8f0;--muted:#94a3b8;--acc:#38bdf8;--acc2:#22d3ee}
+  *{box-sizing:border-box;margin:0}
+  body{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;padding:40px 20px;
+       font-family:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;color:var(--txt);
+       background:radial-gradient(900px 500px at 15% -10%,rgba(56,189,248,.18),transparent 60%),
+                  radial-gradient(700px 500px at 110% 110%,rgba(34,211,238,.10),transparent 60%),var(--bg)}
+  .card{width:100%;max-width:760px;background:var(--card);border:1px solid var(--line);border-radius:20px;overflow:hidden;
+        box-shadow:0 20px 60px rgba(0,0,0,.45)}
+  .top{height:6px;background:linear-gradient(90deg,var(--acc),var(--acc2))}
+  .body{padding:40px 44px}
+  .badge{display:inline-flex;align-items:center;gap:8px;font:600 13px/1 Consolas,"Courier New",monospace;letter-spacing:2px;
+         color:var(--acc);background:rgba(56,189,248,.12);padding:8px 14px;border-radius:999px}
+  .dot{width:8px;height:8px;border-radius:50%;background:#4ade80;box-shadow:0 0 10px #4ade80}
+  h1{margin-top:20px;font-size:40px;line-height:1.15}
+  h1 span{color:var(--acc)}
+  .lead{margin-top:12px;font-size:18px;color:var(--muted);line-height:1.6}
+  .grid{margin-top:32px;display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+  .item{background:rgba(255,255,255,.02);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+  .item small{display:block;font:600 11px/1 Consolas,monospace;letter-spacing:2px;color:var(--muted);text-transform:uppercase}
+  .item b{display:block;margin-top:8px;font:600 17px Consolas,"Courier New",monospace;color:var(--txt)}
+  .flow{margin-top:28px;display:flex;align-items:center;flex-wrap:wrap;gap:10px;font:14px Consolas,monospace;color:var(--muted)}
+  .flow span{background:#0b1222;border:1px solid var(--line);border-radius:8px;padding:8px 12px;color:var(--txt)}
+  .flow i{font-style:normal;color:var(--acc)}
+  footer{font-size:13px;color:#64748b;text-align:center}
+  @media(max-width:600px){.body{padding:28px 22px}h1{font-size:30px}.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+  <main class="card">
+    <div class="top"></div>
+    <div class="body">
+      <span class="badge"><span class="dot"></span>HOST VIRTUAL 1 · ESTÁTICO</span>
+      <h1>Bienvenido a <span>sitio1.local</span></h1>
+      <p class="lead">Esta página es un archivo HTML estático que Nginx entrega directamente desde el disco, sin pasar por ningún backend.</p>
+      <div class="grid">
+        <div class="item"><small>Servidor</small><b>groupcodex</b></div>
+        <div class="item"><small>Dirección IP</small><b>192.168.56.10</b></div>
+        <div class="item"><small>Raíz del sitio</small><b>/var/www/sitio1</b></div>
+        <div class="item"><small>Servido por</small><b>Nginx · puerto 80</b></div>
+      </div>
+      <div class="flow">
+        <span>Navegador</span><i>→</i><span>Host: sitio1.local</span><i>→</i><span>Nginx</span><i>→</i><span>index.html</span>
+      </div>
+    </div>
+  </main>
+  <footer>Grupo CodeX · Sistemas Operativos II · Universidad Privada Domingo Savio</footer>
+</body>
+</html>

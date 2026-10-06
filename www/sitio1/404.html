@@ -1,6 +1,35 @@
 <!DOCTYPE html>
-<html lang="es"><head><meta charset="UTF-8"><title>404 - No encontrado</title>
-<style>body{font-family:Arial;background:#0f172a;color:#e2e8f0;text-align:center;padding:80px}
-h1{font-size:90px;color:#f59e0b;margin:0}a{color:#38bdf8}</style></head>
-<body><h1>404</h1><h2>Página no encontrada</h2>
-<p>La ruta solicitada no existe en <b>sitio1.local</b>.</p><a href="/">Volver al inicio</a></body></html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>404 · Página no encontrada</title>
+<style>
+  *{box-sizing:border-box;margin:0}
+  body{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:40px 20px;text-align:center;
+       font-family:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;color:#e2e8f0;
+       background:radial-gradient(800px 500px at 50% 0%,rgba(245,158,11,.14),transparent 60%),#0b1120}
+  .box{max-width:560px}
+  .code{font-size:140px;font-weight:800;line-height:1;letter-spacing:-4px;
+        background:linear-gradient(180deg,#fbbf24,#f59e0b 60%,#b45309);-webkit-background-clip:text;background-clip:text;color:transparent}
+  h1{margin-top:12px;font-size:28px}
+  p{margin-top:12px;color:#94a3b8;font-size:17px;line-height:1.6}
+  .path{display:inline-block;margin-top:18px;font:15px Consolas,"Courier New",monospace;color:#fde68a;
+        background:rgba(245,158,11,.10);border:1px solid rgba(245,158,11,.35);border-radius:8px;padding:8px 14px;word-break:break-all}
+  a{display:inline-block;margin-top:28px;padding:12px 26px;border-radius:10px;background:#38bdf8;color:#0b1120;font-weight:700;text-decoration:none}
+  a:hover{background:#7dd3fc}
+  small{display:block;margin-top:36px;color:#475569;font-size:13px}
+</style>
+</head>
+<body>
+  <div class="box">
+    <div class="code">404</div>
+    <h1>Página no encontrada</h1>
+    <p>La ruta que pediste no existe en <b>sitio1.local</b>.</p>
+    <div class="path" id="ruta">/</div><br>
+    <a href="/">Volver al inicio</a>
+    <small>Nginx · sitio1.local · Grupo CodeX</small>
+  </div>
+  <script>document.getElementById('ruta').textContent = location.pathname;</script>
+</body>
+</html>
