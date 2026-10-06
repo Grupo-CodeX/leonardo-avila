@@ -5,6 +5,8 @@ Autor: Leonardo Avila Bejarano · Grupo CodeX
 
 ## Arquitectura
 
+![Diagrama de arquitectura](docs/diagrama-arquitectura.png)
+
 ```
 Cliente (Windows: navegador / curl) --HTTP:80--> Ubuntu Server 26.04 (192.168.56.10)
                                                   └─ Nginx 1.28 (puerto 80)
