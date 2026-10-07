@@ -86,9 +86,12 @@ app.get('/', (req, res) => {
     <div class="acciones"><a class="btn" href="/api/info">Ver /api/info</a><a class="btn sec" href="/logout">Cerrar sesión</a></div>`));
 });
 
-app.post('/login', (req, res) => {
-  req.session.usuario = req.body.usuario;
-  res.redirect('/');
+app.post('/login', (req, res, next) => {
+  req.session.regenerate((err) => {      // ID nuevo al iniciar sesión
+    if (err) return next(err);
+    req.session.usuario = req.body.usuario;
+    res.redirect('/');
+  });
 });
 
 app.get('/logout', (req, res) => {
